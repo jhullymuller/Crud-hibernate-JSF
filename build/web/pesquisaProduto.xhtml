@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./principal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contexto">
+        <h1>Pesquisa Produto</h1>
+        <h:form id="form_pesquisa">
+            <p:panelGrid id="painel_pesquisa" columns="3" >
+                <p:outputLabel value="Produto: "/>
+                <p:inputText id="produto" value="#{produtoC.produto.nome}" />
+                <p:commandButton value="Pesquisar" update="tabela" action="#{produtoC.pesquisarProduto()}"/>
+            </p:panelGrid>
+
+
+            <p:dataTable id="tabela" var="produto" value="#{produtoC.produtos}" rows="10"
+                         paginator="true"
+                         emptyMessage="Nenhum produto encontrado"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,25">
+                <p:column headerText="Produto">
+                    <h:outputText value="#{produto.nome}" />
+                </p:column>
+
+                <p:column headerText="Preco">
+                    <h:outputText value="#{produto.preco}" />
+                </p:column>
+
+                <p:column headerText="Estoque">
+                    <h:outputText value="#{produto.estoque}" />
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{produto.descricao}" />
+                </p:column>
+                <p:column headerText="Ação">
+                    <p:commandButton icon="ui-icon-pencil" title="Alterar"
+                        action="#{produtoC.carregaProduto()}" >
+                        <f:setPropertyActionListener value="#{produto}" target="#{produtoC.produto}"/>
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash" title="Excluir" update="msg_principal,tabela" 
+                                   actionListener="#{produtoC.excluir()}" >
+                          <p:confirm header="Confirmação" message="Deseja excluir Produto ?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog> 
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

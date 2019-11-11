@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./principal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contexto">
+        <h1>Pesquisa Cliente</h1>
+        <h:form id="form_pesquisa">
+            <p:panelGrid id="painel_pesquisa" columns="3" >
+                <p:outputLabel value="Cliente "/>
+                <p:inputText id="cliente" value="#{clienteC.cliente.nome}" />
+                <p:commandButton value="Pesquisar" update="tabela" action="#{clienteC.pesquisarCliente()}"/>
+            </p:panelGrid>
+
+
+            <p:dataTable id="tabela" var="cliente" value="#{clienteC.clientes}" rows="25"
+                         paginator="true"
+                         emptyMessage="Nenhum Cliente encontrado"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,25">
+                <p:column headerText="Cliente">
+                    <h:outputText value="#{clienteC.nome}" />
+                </p:column>
+
+                <p:column headerText="Telefone">
+                    <h:outputText value="#{clienteC.cliente.telefone}" />
+                </p:column>
+
+                <p:column headerText="cpf">
+                    <h:outputText value="#{clienteC.cliente.cpf}" />
+                </p:column>
+
+                <p:column headerText="Email">
+                    <h:outputText value="#{clienteC.cliente.email}" />
+                </p:column>
+                <p:column headerText="Ação">
+                    <h:outputText value="" />
+                </p:column>
+
+            </p:dataTable>
+
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

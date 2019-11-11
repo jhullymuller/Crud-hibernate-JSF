@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./principal.xhtml">
+
+            <ui:define name="contexto" >
+                <h:form id="form_pesquisa">
+                    <h:panelGroup  rendered="#{categoriaC.mostra_toolbar}">
+                        <p:toolbar class="toolbar_pesquisa" >
+
+                            <f:facet name="left">
+
+                                <p:commandButton value="Pesquisar" update="tabela" action="#{categoriaC.pesquisarCategorias()}"/>
+
+                                <p:commandButton  value="Novo" process="@this" 
+                                                  update="@form" 
+                                                  actionListener="#{categoriaC.novo()}" />
+
+
+
+                            </f:facet>
+
+                        </p:toolbar>
+                        <p:panelGrid id="painel_pesquisa" columns="3" >
+                            <p:outputLabel value="Categoria "/>
+                            <p:inputText id="cliente" value="#{categoriaC.categoria.descricao}" />
+                            
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tabela" var="cliente" value="#{categoriaC.categorias}" rows="10"
+                                     paginator="true"
+                                     emptyMessage="Nenhum cliente encontrado"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,25">
+                            <p:column headerText="Cliente">
+                                <h:outputText value="#{categoria.descricao}" />
+                            </p:column>
+
+                            
+                            <p:column headerText="Ação">
+                                <p:commandButton icon="ui-icon-pencil" update="@form"
+                                                 title="Alterar"
+                                                 action="#{categoriaC.carregaCategoria()}" >
+                                    <f:setPropertyActionListener value="#{categoria}" target="#{categoriaC.categoria}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="ui-icon-trash" title="Excluir" update="msg_principal,tabela" 
+                                                 actionListener="#{categoriaC.excluir()}" >
+                                    <p:confirm header="Confirmação" message="Deseja excluir Categoria ?" icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog> 
+                    </h:panelGroup>
+
+
+                    <!--inicio do codigo para salvar e alterar-->
+                    <h:panelGroup rendered="#{!clienteC.mostra_toolbar}"> 
+                        <p:toolbar class="toolbar_pesquisa">
+
+                            <f:facet name="left">
+                                <p:commandButton  value="Salvar" update="@form msg_principal"
+                                                  icon="pi pi-file" action="#{clienteC.salvar()}"/>
+
+                                <p:commandButton value="Voltar" update="@form msg_principal"   immediate="true"
+                                                 actionListener="#{clienteC.novo()}" />
+
+
+
+
+                            </f:facet>
+
+
+
+                        </p:toolbar>
+
+                        <h:panelGrid id="painel" columns="2">
+                            <p:outputLabel value="Cliente" /> 
+                            <p:inputText id="nome" value="#{clienteC.cliente.nome}"
+                                         required="true" 
+                                         requiredMessage="Nome é obrigatório" />
+
+                            <p:outputLabel value="CPF:" /> 
+                            <p:inputText id="CPF"  required="true" 
+                                         value="#{clienteC.cliente.cpf}"
+                                         requiredMessage="CPF é obrigatório" />
+
+                            <p:outputLabel value="Telefone" /> 
+                            <p:inputText id="telefone"  required="true"
+                                         value="#{clienteC.cliente.telefone}"
+                                         requiredMessage="Telefone é obrigatório" />
+
+                            <p:outputLabel value="Email" />
+                            <p:inputTextarea id="email" value="#{clienteC.cliente.email}" />
+
+                            <h:outputText />
+                            <!--<p:commandButton value="Salvar"  />-->
+
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
